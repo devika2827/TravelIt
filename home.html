@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home — TravelIt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+
+<style>
+/* ─── CSS VARIABLES ─── */
+:root {
+  --clr-bg: #f0f3f8;
+  --clr-surface: #ffffff;
+  --clr-surface-2: #f8fafc;
+  --clr-border: #e2e8f0;
+  --clr-border-light: #edf2f7;
+  --clr-teal: #3a7c8c;
+  --clr-teal-dark: #2e6372;
+  --clr-teal-light: #4a9cb0;
+  --clr-teal-ghost: rgba(58,124,140,0.08);
+  --clr-teal-ghost2: rgba(58,124,140,0.14);
+  --clr-text: #1a2636;
+  --clr-text-2: #4a5f72;
+  --clr-text-3: #8a9aaa;
+  --clr-gold: #c9a84c;
+  --clr-gold-light: #f0d98b;
+  --nav-h: 64px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 1px 4px rgba(26,38,54,0.06), 0 0 0 1px rgba(26,38,54,0.04);
+  --shadow-md: 0 4px 20px rgba(26,38,54,0.09), 0 1px 4px rgba(26,38,54,0.06);
+  --shadow-lg: 0 16px 48px rgba(26,38,54,0.12), 0 4px 12px rgba(26,38,54,0.08);
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { display: block; }
+input, select, button { font-family: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+
+/* ─── NAVBAR ─── */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: var(--clr-surface);
+  border-bottom: 1px solid var(--clr-border);
+  z-index: 1000;
+  transition: box-shadow var(--transition);
+}
+.navbar.scrolled {
+  box-shadow: 0 2px 24px rgba(26,38,54,0.09);
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+  color: var(--clr-teal);
+  margin-right: 40px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--clr-gold);
+  display: inline-block;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 4px;
+  flex: 1;
+}
+.nav-links li a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--clr-text-2);
+  letter-spacing: 0.01em;
+  transition: color var(--transition), background var(--transition);
+}
+.nav-links li a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 50%; right: 50%;
+  height: 2px;
+  background: var(--clr-teal);
+  border-radius: 2px;
+  transition: left var(--transition), right var(--transition);
+}
+.nav-links li a:hover { color: var(--clr-teal); background: var(--clr-teal-ghost); }
+.nav-links li a.active {
+  color: var(--clr-teal);
+  font-weight: 600;
+}
+.nav-links li a.active::after { left: 14px; right: 14px; }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+.nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 40px;
+  border: 1px solid var(--clr-border);
+  background: var(--clr-surface);
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.nav-profile:hover {
+  border-color: var(--clr-teal-light);
+  box-shadow: 0 0 0 3px var(--clr-teal-ghost);
+}
+.nav-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, var(--clr-teal-light), var(--clr-teal));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 0.85rem;
+}
+.nav-profile-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--clr-text);
+}
+
+/* ─── PAGE WRAPPER ─── */
+.page-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 60px) 28px 80px;
+}
+
+/* ─── HERO SECTION ─── */
+.hero-section {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--clr-text);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--clr-text-3);
+  font-weight: 400;
+}
+
+/* ─── SEARCH CARD ─── */
+.search-card {
+  background: var(--clr-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--clr-border);
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 32px;
+  animation: slideUp 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── FORM GRID ─── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.form-group.full { grid-column: 1 / -1; }
+.form-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--clr-text-2);
+  letter-spacing: 0.01em;
+}
+
+/* ─── CUSTOM SELECT ─── */
+.custom-select {
+  position: relative;
+  z-index: 10;
+}
+.select-trigger {
+  width: 100%;
+  height: 52px;
+  border: 1px solid var(--clr-border);
+  border-radius: 10px;
+  padding: 0 42px 0 14px;
+  font-size: 0.95rem;
+  color: var(--clr-text);
+  background: var(--clr-surface);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  outline: none;
+  user-select: none;
+}
+.select-trigger:hover { border-color: #b0bfcd; }
+.select-trigger.open {
+  border-color: var(--clr-teal);
+  box-shadow: 0 0 0 3px var(--clr-teal-ghost2);
+}
+.select-trigger.placeholder { color: var(--clr-text-3); }
+.select-arrow {
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  transition: transform var(--transition);
+  color: var(--clr-text-3);
+  pointer-events: none;
+}
+.select-trigger.open .select-arrow { transform: translateY(-50%) rotate(180deg); }
+
+.select-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-teal);
+  border-radius: 10px;
+  z-index: 9999;
+  max-height: 280px;
+  overflow-y: auto;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.select-menu.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.select-menu ul {
+  list-style: none;
+  padding: 6px;
+}
+.select-option {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  color: var(--clr-text-2);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.select-option:hover { background: var(--clr-teal-ghost); color: var(--clr-teal); }
+.select-option.selected { color: var(--clr-teal); font-weight: 500; background: var(--clr-teal-ghost); }
+
+/* ─── DATE & NUMBER INPUTS ─── */
+.form-input {
+  height: 52px;
+  border: 1px solid var(--clr-border);
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 0.95rem;
+  color: var(--clr-text);
+  background: var(--clr-surface);
+  outline: none;
+  transition: all var(--transition);
+}
+.form-input:focus {
+  border-color: var(--clr-teal);
+  box-shadow: 0 0 0 3px var(--clr-teal-ghost2);
+}
+.form-input::placeholder { color: var(--clr-text-3); }
+.form-input:hover:not(:focus) { border-color: #b0bfcd; }
+
+/* ─── RIDE SECTION ─── */
+.ride-section {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--clr-border-light);
+}
+
+.ride-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ride-toggle {
+  display: flex;
+  gap: 8px;
+  background: var(--clr-surface-2);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.toggle-btn {
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--clr-text-2);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+}
+
+.toggle-btn.active {
+  background: var(--clr-teal);
+  color: #fff;
+  font-weight: 600;
+}
+
+.toggle-btn:hover:not(.active) {
+  background: var(--clr-teal-ghost);
+  color: var(--clr-teal);
+}
+
+.ride-details {
+  max-height: 0;
+  
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+}
+
+.ride-details.show {
+  max-height: 4000px;
+  opacity: 1;
+  margin-top: 16px;
+}
+
+.location-input-wrapper {
+  position: relative;
+  display: flex;
+  gap: 8px;
+}
+
+.location-input-wrapper .form-input {
+  flex: 1;
+}
+
+.location-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--clr-text-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition);
+}
+
+.location-btn:hover {
+  border-color: var(--clr-teal);
+  color: var(--clr-teal);
+  background: var(--clr-teal-ghost);
+}
+
+.location-btn svg {
+  color: var(--clr-teal);
+}
+
+.suggested-time {
+  font-size: 0.75rem;
+  color: var(--clr-text-3);
+  margin-top: 4px;
+  display: block;
+}
+
+/* ─── SEARCH BUTTON ─── */
+.search-btn {
+  width: 100%;
+  height: 56px;
+  background: var(--clr-teal);
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: visible;
+  transition: background var(--transition), transform 0.12s;
+  margin-top: 8px;
+  z-index: 1;
+
+}
+.search-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.search-btn:hover {
+  background: var(--clr-teal-dark);
+  box-shadow: 0 6px 24px rgba(58,124,140,0.35);
+}
+.search-btn:active { transform: scale(0.985); }
+
+/* ─── RESULTS SECTION ─── */
+.results-section {
+  display: none;
+  animation: slideUp 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.results-section.show { display: block; }
+
+.results-header {
+  margin-bottom: 24px;
+}
+.results-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--clr-text);
+  margin-bottom: 6px;
+}
+.results-subtitle {
+  font-size: 0.9rem;
+  color: var(--clr-text-3);
+}
+
+/* ─── OPTION CARD ─── */
+.option-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+.option-card:hover {
+  border-color: var(--clr-teal);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.option-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+.option-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--clr-teal-ghost2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.option-details {
+  flex: 1;
+}
+.option-mode {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+.option-desc {
+  font-size: 0.85rem;
+  color: var(--clr-text-3);
+}
+
+.option-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+.option-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--clr-teal);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+.option-time {
+  font-size: 0.85rem;
+  color: var(--clr-text-3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: flex-end;
+}
+
+/* ─── BADGE ─── */
+.fastest-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #fdf7e4 0%, #fef9ed 100%);
+  border: 1px solid #eedfa5;
+  color: #7d5c14;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .option-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .option-right {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .option-time {
+    justify-content: flex-start;
+  }
+  .ride-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .location-input-wrapper {
+    flex-direction: column;
+  }
+  .location-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-wrapper {
+    padding: calc(var(--nav-h) + 40px) 20px 60px;
+  }
+  .search-card {
+    padding: 24px 20px;
+  }
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  .toggle-btn {
+    flex: 1;
+  }
+}
+
+/* ─── HIDDEN ─── */
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      TravelIt
+      <span class="nav-logo-dot"></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#">My Trips</a></li>
+      <li><a href="#">Profile</a></li>
+    
+    </ul>
+    <div class="nav-right">
+      <div class="nav-profile">
+        <div class="nav-avatar">SG</div>
+        <span class="nav-profile-name">Sanya</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="page-wrapper">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <h1 class="hero-title">Find Your Perfect Journey</h1>
+    <p class="hero-subtitle">Compare flights, trains, and more to get the best travel options</p>
+  </div>
+
+  <!-- Search Card -->
+  <div class="search-card">
+    <form id="search-form">
+      <div class="form-grid">
+        <!-- Origin -->
+        <div class="form-group">
+          <label class="form-label">From</label>
+          <div class="custom-select" id="origin-select">
+            <div class="select-trigger" data-value="">
+              <span class="select-value">Select</span>
+              <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="select-menu">
+              <ul>
+                <li class="select-option" data-value="Mumbai">Mumbai</li>
+                <li class="select-option" data-value="Delhi">Delhi</li>
+                <li class="select-option" data-value="Bangalore">Bangalore</li>
+                <li class="select-option" data-value="Hyderabad">Hyderabad</li>
+                <li class="select-option" data-value="Chennai">Chennai</li>
+                <li class="select-option" data-value="Kolkata">Kolkata</li>
+                <li class="select-option" data-value="Pune">Pune</li>
+                <li class="select-option" data-value="Ahmedabad">Ahmedabad</li>
+                <li class="select-option" data-value="Jaipur">Jaipur</li>
+                <li class="select-option" data-value="Goa">Goa</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Destination -->
+        <div class="form-group">
+          <label class="form-label">To</label>
+          <div class="custom-select" id="destination-select">
+            <div class="select-trigger" data-value="">
+              <span class="select-value">Select</span>
+              <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="select-menu">
+              <ul>
+                <li class="select-option" data-value="Mumbai">Mumbai</li>
+                <li class="select-option" data-value="Delhi">Delhi</li>
+                <li class="select-option" data-value="Bangalore">Bangalore</li>
+                <li class="select-option" data-value="Hyderabad">Hyderabad</li>
+                <li class="select-option" data-value="Chennai">Chennai</li>
+                <li class="select-option" data-value="Kolkata">Kolkata</li>
+                <li class="select-option" data-value="Pune">Pune</li>
+                <li class="select-option" data-value="Ahmedabad">Ahmedabad</li>
+                <li class="select-option" data-value="Jaipur">Jaipur</li>
+                <li class="select-option" data-value="Goa">Goa</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date -->
+        <div class="form-group">
+          <label class="form-label">Travel Date</label>
+          <input type="date" class="form-input" id="travel-date" required />
+        </div>
+
+        <!-- Travelers -->
+        <div class="form-group">
+          <label class="form-label">Travelers</label>
+          <input type="number" class="form-input" id="travelers" min="1" max="9" value="1" placeholder="Number of travelers" required />
+        </div>
+      </div>
+
+      <!-- Ride to Departure Point -->
+      <div class="ride-section">
+        <div class="ride-header">
+          <label class="form-label">Need a ride to departure point?</label>
+          <div class="ride-toggle">
+            <button type="button" class="toggle-btn" data-value="no" onclick="toggleRide('no')">No</button>
+            <button type="button" class="toggle-btn active" data-value="yes" onclick="toggleRide('yes')">Yes</button>
+          </div>
+        </div>
+
+        <div class="ride-details" id="ride-details">
+          <div class="form-grid">
+            <!-- Pickup Location -->
+            <div class="form-group full">
+              <label class="form-label">Pickup Location</label>
+              <div class="location-input-wrapper">
+                <input type="text" class="form-input" id="pickup-location" placeholder="Enter your pickup address" />
+                <button type="button" class="location-btn" onclick="detectLocation()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  Detect Location
+                </button>
+              </div>
+            </div>
+
+            <!-- Pickup Time -->
+            <div class="form-group">
+              <label class="form-label">Pickup Time</label>
+              <input type="time" class="form-input" id="pickup-time" value="08:00" />
+              <span class="suggested-time">Suggested: 8:00 AM (2h before departure)</span>
+            </div>
+
+            <!-- Cab Type -->
+            <div class="form-group">
+              <label class="form-label">Cab Type</label>
+              <div class="custom-select" id="cab-type-select">
+                <div class="select-trigger" data-value="">
+                  <span class="select-value">Select</span>
+                  <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+                <div class="select-menu">
+                  <ul>
+                    <li class="select-option" data-value="sedan">Sedan (4)(₹500-540)</li>
+                    <li class="select-option" data-value="suv">SUV (6)(₹1000-1050)</li>
+                    <li class="select-option" data-value="electric">Electric (4)(₹700-750)</li>
+                    <li class="select-option" data-value="bike">Bike (1)(₹250-300)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="search-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        Search Travel Options
+      </button>
+    </form>
+  </div>
+
+  <!-- Results Section -->
+  <div class="results-section" id="results-section">
+    <div class="results-header">
+      <h2 class="results-title">Available Options</h2>
+      <p class="results-subtitle" id="results-subtitle">Showing results for your journey</p>
+    </div>
+
+    <div id="results-container">
+      <!-- Results will be inserted here dynamically -->
+    </div>
+  </div>
+</div>
+
+<script>
+// Custom Select Functionality
+function initCustomSelect(selectId) {
+  const selectElement = document.getElementById(selectId);
+  const trigger = selectElement.querySelector('.select-trigger');
+  const menu = selectElement.querySelector('.select-menu');
+  const options = selectElement.querySelectorAll('.select-option');
+  const valueSpan = selectElement.querySelector('.select-value');
+
+  trigger.addEventListener('click', () => {
+    const isOpen = trigger.classList.contains('open');
+    
+    // Close all other selects
+    document.querySelectorAll('.select-trigger.open').forEach(t => {
+      t.classList.remove('open');
+      t.parentElement.querySelector('.select-menu').classList.remove('open');
+    });
+
+    if (!isOpen) {
+      trigger.classList.add('open');
+      menu.classList.add('open');
+    }
+  });
+
+  options.forEach(option => {
+    option.addEventListener('click', () => {
+      const value = option.dataset.value;
+      trigger.dataset.value = value;
+      valueSpan.textContent = value;
+      trigger.classList.remove('placeholder');
+      
+      // Update selected state
+      options.forEach(opt => opt.classList.remove('selected'));
+      option.classList.add('selected');
+      
+      // Close menu
+      trigger.classList.remove('open');
+      menu.classList.remove('open');
+    });
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!selectElement.contains(e.target)) {
+      trigger.classList.remove('open');
+      menu.classList.remove('open');
+    }
+  });
+}
+
+// Initialize selects
+initCustomSelect('origin-select');
+initCustomSelect('destination-select');
+initCustomSelect('cab-type-select');
+
+// Toggle ride section
+function toggleRide(value) {
+  const buttons = document.querySelectorAll('.toggle-btn');
+  const rideDetails = document.getElementById('ride-details');
+  
+  buttons.forEach(btn => {
+    if (btn.dataset.value === value) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+  
+  if (value === 'yes') {
+    rideDetails.classList.add('show');
+  } else {
+    rideDetails.classList.remove('show');
+  }
+}
+
+// Detect current location
+function detectLocation() {
+  const locationInput = document.getElementById('pickup-location');
+  
+  if (navigator.geolocation) {
+    locationInput.value = 'Detecting location...';
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // In real app, use reverse geocoding API
+        // For demo, using placeholder
+        locationInput.value = 'IGDTUW, Kashmere Gate, New Delhi, Delhi 110001';
+      },
+      (error) => {
+        alert('Unable to detect location. Please enter manually.');
+        locationInput.value = '';
+      }
+    );
+  } else {
+    alert('Geolocation is not supported by your browser. Please enter manually.');
+  }
+}
+
+// Initialize ride section as shown by default
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('ride-details').classList.add('show');
+});
+
+// Delhi to Mumbai travel options (includes home to station/airport)
+const travelOptions = [
+  {
+    mode: 'Flight (Akasa Air) + Taxi',
+    icon: '✈️',
+    description: 'Home to IGI Airport (Uber) → Flight to Mumbai',
+    price: 5328,
+    time: '5h 29m',
+    fastest: true
+  },
+  {
+    mode: 'Rajdhani Express',
+    icon: '🚂',
+    description: 'Home to Hazrat Nizamuddin(Metro) → Train to Mumbai Central',
+    price: 1534,
+    time: '18h 35m',
+    fastest: false
+  },
+  {
+    mode: 'AC Sleeper Bus',
+    icon: '🚌',
+    description: 'Home to Kashmere Gate ISBT (Auto) → Overnight bus to Mumbai',
+    price: 2700,
+    time: '29h 35m',
+    fastest: false
+  },
+  {
+    mode: 'Self-Drive Car',
+    icon: '🚗',
+    description: 'Home → NH48 route to Mumbai (fuel included)',
+    price: 8500,
+    time: '23h 45m',
+    fastest: false
+  }
+];
+
+// Handle form submission
+document.getElementById('search-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const origin = document.getElementById('origin-select').querySelector('.select-trigger').dataset.value;
+  const destination = document.getElementById('destination-select').querySelector('.select-trigger').dataset.value;
+  const date = document.getElementById('travel-date').value;
+  const travelers = document.getElementById('travelers').value;
+
+  if (!origin || !destination) {
+    alert('Please select both origin and destination cities');
+    return;
+  }
+
+  if (!date) {
+    alert('Please select a travel date');
+    return;
+  }
+
+  // Show results
+  displayResults(origin, destination, date, travelers);
+});
+
+function displayResults(origin, destination, date, travelers) {
+  const resultsSection = document.getElementById('results-section');
+  const resultsSubtitle = document.getElementById('results-subtitle');
+  const resultsContainer = document.getElementById('results-container');
+
+  // Format date
+  const dateObj = new Date(date);
+  const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  // Update subtitle
+  resultsSubtitle.textContent = `${origin} → ${destination} • ${formattedDate} • ${travelers} traveler${travelers > 1 ? 's' : ''}`;
+
+  // Calculate prices based on number of travelers
+  const multiplier = parseInt(travelers);
+
+  // Generate result cards
+  resultsContainer.innerHTML = travelOptions.map(option => {
+    const totalPrice = option.price * multiplier;
+    return `
+    <div class="option-card" onclick="selectOption('${option.mode}')">
+      <div class="option-left">
+        <div class="option-icon">${option.icon}</div>
+        <div class="option-details">
+          <div class="option-mode">${option.mode}</div>
+          <div class="option-desc">${option.description}</div>
+          ${option.fastest ? '<span class="fastest-badge">⚡ Fastest</span>' : ''}
+        </div>
+      </div>
+      <div class="option-right">
+        <div class="option-price">₹${totalPrice.toLocaleString()}</div>
+        <div class="option-time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          ${option.time}
+        </div>
+      </div>
+    </div>
+  `}).join('');
+
+  // Show results section with animation
+  resultsSection.classList.add('show');
+  
+  // Smooth scroll to results
+  setTimeout(() => {
+    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+
+function selectOption(mode) {
+  window.location.href = "planner.html";
+  // In real app: navigate to booking page with selected option
+}
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  if (window.scrollY > 10) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
+// Set minimum date to today
+document.getElementById('travel-date').min = new Date().toISOString().split('T')[0];
+</script>
+
+</body>
+</html>

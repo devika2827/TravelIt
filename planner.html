@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Journey Planner — TravelIt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+
+<style>
+/* ─── CSS VARIABLES ─── */
+:root {
+  --clr-bg: #f0f3f8;
+  --clr-surface: #ffffff;
+  --clr-surface-2: #f8fafc;
+  --clr-border: #e2e8f0;
+  --clr-border-light: #edf2f7;
+  --clr-teal: #3a7c8c;
+  --clr-teal-dark: #2e6372;
+  --clr-teal-light: #4a9cb0;
+  --clr-teal-ghost: rgba(58,124,140,0.08);
+  --clr-teal-ghost2: rgba(58,124,140,0.14);
+  --clr-text: #1a2636;
+  --clr-text-2: #4a5f72;
+  --clr-text-3: #8a9aaa;
+  --clr-gold: #c9a84c;
+  --clr-gold-light: #f0d98b;
+  --nav-h: 64px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 1px 4px rgba(26,38,54,0.06), 0 0 0 1px rgba(26,38,54,0.04);
+  --shadow-md: 0 4px 20px rgba(26,38,54,0.09), 0 1px 4px rgba(26,38,54,0.06);
+  --shadow-lg: 0 16px 48px rgba(26,38,54,0.12), 0 4px 12px rgba(26,38,54,0.08);
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { display: block; }
+input, select, button { font-family: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+
+/* ─── NAVBAR ─── */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: var(--clr-surface);
+  border-bottom: 1px solid var(--clr-border);
+  z-index: 1000;
+  transition: box-shadow var(--transition);
+}
+.navbar.scrolled {
+  box-shadow: 0 2px 24px rgba(26,38,54,0.09);
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+  color: var(--clr-teal);
+  margin-right: 40px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--clr-gold);
+  display: inline-block;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 4px;
+  flex: 1;
+}
+.nav-links li a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--clr-text-2);
+  letter-spacing: 0.01em;
+  transition: color var(--transition), background var(--transition);
+}
+.nav-links li a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 50%; right: 50%;
+  height: 2px;
+  background: var(--clr-teal);
+  border-radius: 2px;
+  transition: left var(--transition), right var(--transition);
+}
+.nav-links li a:hover { color: var(--clr-teal); background: var(--clr-teal-ghost); }
+.nav-links li a.active {
+  color: var(--clr-teal);
+  font-weight: 600;
+}
+.nav-links li a.active::after { left: 14px; right: 14px; }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+.nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 40px;
+  border: 1px solid var(--clr-border);
+  background: var(--clr-surface);
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.nav-profile:hover {
+  border-color: var(--clr-teal-light);
+  box-shadow: 0 0 0 3px var(--clr-teal-ghost);
+}
+.nav-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--clr-teal-light), var(--clr-teal));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 0.85rem;
+}
+.nav-profile-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--clr-text);
+}
+
+/* ─── PAGE WRAPPER ─── */
+.page-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 40px) 28px 80px;
+}
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--clr-text-3);
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: var(--clr-text-3); transition: color var(--transition); }
+.breadcrumb a:hover { color: var(--clr-teal); }
+.breadcrumb span { color: var(--clr-text-2); font-weight: 500; }
+.breadcrumb-sep {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--clr-border);
+  display: inline-block;
+}
+
+/* ─── HEADER CARD ─── */
+.header-card {
+  background: var(--clr-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--clr-border);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 32px;
+  animation: slideUp 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.trip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.trip-route {
+  flex: 1;
+}
+
+.route-cities {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--clr-text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.route-arrow {
+  color: var(--clr-teal);
+  font-size: 1.2rem;
+}
+
+.trip-date {
+  font-size: 0.9rem;
+  color: var(--clr-text-3);
+  margin-top: 6px;
+}
+
+.trip-badge {
+  background: var(--clr-teal-ghost2);
+  color: var(--clr-teal);
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.trip-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--clr-border-light);
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  color: var(--clr-text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.summary-value {
+  font-size: 1.05rem;
+  color: var(--clr-text);
+  font-weight: 600;
+}
+
+/* ─── TIMELINE CARD ─── */
+.timeline-card {
+  background: var(--clr-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--clr-border);
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+  animation: slideUp 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+.timeline-header {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--clr-text);
+  margin-bottom: 28px;
+}
+
+/* ─── TIMELINE ─── */
+.timeline {
+  position: relative;
+  padding-left: 48px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--clr-teal), var(--clr-teal-light));
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 32px;
+  animation: fadeIn 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+  opacity: 0;
+}
+
+.timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item:nth-child(2) { animation-delay: 0.2s; }
+.timeline-item:nth-child(3) { animation-delay: 0.3s; }
+.timeline-item:nth-child(4) { animation-delay: 0.4s; }
+.timeline-item:nth-child(5) { animation-delay: 0.5s; }
+.timeline-item:nth-child(6) { animation-delay: 0.6s; }
+.timeline-item:nth-child(7) { animation-delay: 0.7s; }
+.timeline-item:nth-child(8) { animation-delay: 0.8s; }
+.timeline-item:nth-child(9) { animation-delay: 0.9s; }
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -37px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--clr-teal);
+  border: 3px solid var(--clr-surface);
+  box-shadow: 0 0 0 2px var(--clr-teal);
+  z-index: 1;
+}
+
+.timeline-item.highlight .timeline-dot {
+  width: 16px;
+  height: 16px;
+  left: -33px;
+  background: var(--clr-gold);
+  box-shadow: 0 0 0 3px var(--clr-gold-light);
+}
+
+.timeline-content {
+  background: var(--clr-surface-2);
+  border: 1px solid var(--clr-border-light);
+  border-radius: 12px;
+  padding: 18px 20px;
+  transition: all var(--transition);
+}
+
+.timeline-item.highlight .timeline-content {
+  background: linear-gradient(135deg, #fdf7e4 0%, #fef9ed 100%);
+  border-color: #eedfa5;
+}
+
+.timeline-item.buffer .timeline-content {
+  background: linear-gradient(135deg, #e8f4ff 0%, #f0f8ff 100%);
+  border-color: #b3d9ff;
+}
+
+.timeline-item.buffer .timeline-dot {
+  background: #4a9cb0;
+  box-shadow: 0 0 0 2px #4a9cb0;
+}
+
+.timeline-item.buffer .timeline-title {
+  color: var(--clr-teal);
+}
+
+.timeline-content:hover {
+  border-color: var(--clr-teal-light);
+  transform: translateX(4px);
+}
+
+.timeline-time {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--clr-teal);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.timeline-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--clr-text);
+  margin-bottom: 4px;
+}
+
+.timeline-desc {
+  font-size: 0.85rem;
+  color: var(--clr-text-3);
+  line-height: 1.5;
+}
+
+.timeline-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--clr-border-light);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--clr-text-3);
+}
+
+.meta-item svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ─── ACTION BUTTONS ─── */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.btn {
+  flex: 1;
+  height: 52px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-primary {
+  background: var(--clr-teal);
+  color: #fff;
+  border: none;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  background: var(--clr-teal-dark);
+  box-shadow: 0 6px 24px rgba(58,124,140,0.35);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--clr-surface);
+  color: var(--clr-text-2);
+  border: 1.5px solid var(--clr-border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--clr-teal);
+  color: var(--clr-teal);
+  background: var(--clr-teal-ghost);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .trip-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .trip-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-wrapper {
+    padding: calc(var(--nav-h) + 32px) 20px 60px;
+  }
+  
+  .header-card, .timeline-card {
+    padding: 24px 20px;
+  }
+  
+  .timeline {
+    padding-left: 40px;
+  }
+  
+  .route-cities {
+    font-size: 1.3rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      TravelIt
+      <span class="nav-logo-dot"></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#">My Trips</a></li>
+      <li><a href="#">Profile</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-profile">
+        <div class="nav-avatar">SG</div>
+        <span class="nav-profile-name">Sanya</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="page-wrapper">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="#">Home</a>
+    <span class="breadcrumb-sep"></span>
+    <a href="#">Search Results</a>
+    <span class="breadcrumb-sep"></span>
+    <span>Journey Planner</span>
+  </div>
+
+  <!-- Header Card -->
+  <div class="header-card">
+    <div class="trip-header">
+      <div class="trip-route">
+        <div class="route-cities">
+          <span>Delhi</span>
+          <span class="route-arrow">→</span>
+          <span>Mumbai</span>
+        </div>
+        <div class="trip-date">Friday, March 20, 2026</div>
+      </div>
+      <div class="trip-badge">Flight + Airport Taxi</div>
+    </div>
+
+    <div class="trip-summary">
+      <div class="summary-item">
+        <div class="summary-label">Total Time</div>
+        <div class="summary-value">5h 29m</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Total Cost</div>
+        <div class="summary-value">₹5,328</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Travelers</div>
+        <div class="summary-value">1 person</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Status</div>
+        <div class="summary-value">Not Booked</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline Card -->
+  <div class="timeline-card">
+    <h2 class="timeline-header">Your Journey Timeline</h2>
+
+    <div class="timeline">
+      <!-- Step 1: Pickup from Home -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-time">8:00 AM</div>
+          <div class="timeline-title">Pickup from Home</div>
+          <div class="timeline-desc">Uber/Ola taxi will arrive at your location.</div>
+          <div class="timeline-meta">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+              IGDTUW, Delhi
+            </div>
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              Taxi (₹523)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: En Route to Airport -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-time">8:05 AM - 9:00 AM</div>
+          <div class="timeline-title">Travel to IGI Airport</div>
+          <div class="timeline-desc">Drive via NH48. Estimated 55 minutes based on current traffic conditions.</div>
+          <div class="timeline-meta">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              55 min
+            </div>
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              </svg>
+              25 km
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Smart Buffer -->
+      <div class="timeline-item buffer">
+        
+        <div class="timeline-content">
+          <div class="timeline-time">15 minutes</div>
+          <div class="timeline-title">⚡ Smart Buffer</div>
+          <div class="timeline-desc">Potential traffic delay on NH48</div>
+          <div class="timeline-meta">
+           
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Airport Arrival -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-time">9:15 AM</div>
+          <div class="timeline-title">Arrive at IGI Airport - Terminal 3</div>
+          <div class="timeline-meta">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              Indira Gandhi International Airport
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Step 5: Flight Boarding -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-time">10:30 AM</div>
+          <div class="timeline-title">Flight Boarding Begins</div>
+          <div class="timeline-meta">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              </svg>
+              Flight 6E 302
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6: Flight Departure -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-time">11:00 AM</div>
+          <div class="timeline-title">Flight Departure</div>
+          <div class="timeline-meta">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              2h 20m flight
+            </div>
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              ₹5,328
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7: Mumbai Arrival -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-time">1:20 PM</div>
+          <div class="timeline-title">Land in Mumbai</div>
+          <div class="timeline-meta">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              Mumbai International Airport
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+          <polyline points="17 21 17 13 7 13 7 21"></polyline>
+          <polyline points="7 3 7 8 15 8"></polyline>
+        </svg>
+        Go Back
+      </button>
+      <button class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        Proceed to Booking
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  if (window.scrollY > 10) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
+// Button actions
+document.querySelector('.btn-primary').addEventListener('click', () => {
+  window.location.href = "payment.html";
+  // In real app: window.location.href = '/booking';
+});
+
+document.querySelector('.btn-secondary').addEventListener('click', () => {
+  alert('Journey saved to your trips!');
+  // In real app: save to database
+});
+</script>
+
+</body>
+</html>

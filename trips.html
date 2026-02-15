@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Trips — TravelIt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+
+<style>
+/* ─── CSS VARIABLES ─── */
+:root {
+  --clr-bg: #f0f3f8;
+  --clr-surface: #ffffff;
+  --clr-surface-2: #f8fafc;
+  --clr-border: #e2e8f0;
+  --clr-border-light: #edf2f7;
+  --clr-teal: #3a7c8c;
+  --clr-teal-dark: #2e6372;
+  --clr-teal-light: #4a9cb0;
+  --clr-teal-ghost: rgba(58,124,140,0.08);
+  --clr-teal-ghost2: rgba(58,124,140,0.14);
+  --clr-text: #1a2636;
+  --clr-text-2: #4a5f72;
+  --clr-text-3: #8a9aaa;
+  --clr-gold: #c9a84c;
+  --clr-gold-light: #f0d98b;
+  --clr-success: #2e9e6e;
+  --clr-danger: #e05252;
+  --nav-h: 64px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 1px 4px rgba(26,38,54,0.06), 0 0 0 1px rgba(26,38,54,0.04);
+  --shadow-md: 0 4px 20px rgba(26,38,54,0.09), 0 1px 4px rgba(26,38,54,0.06);
+  --shadow-lg: 0 16px 48px rgba(26,38,54,0.12), 0 4px 12px rgba(26,38,54,0.08);
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { display: block; }
+input, select, button { font-family: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+
+/* ─── NAVBAR ─── */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: var(--clr-surface);
+  border-bottom: 1px solid var(--clr-border);
+  z-index: 1000;
+  transition: box-shadow var(--transition);
+}
+.navbar.scrolled {
+  box-shadow: 0 2px 24px rgba(26,38,54,0.09);
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+  color: var(--clr-teal);
+  margin-right: 40px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--clr-gold);
+  display: inline-block;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 4px;
+  flex: 1;
+}
+.nav-links li a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--clr-text-2);
+  letter-spacing: 0.01em;
+  transition: color var(--transition), background var(--transition);
+}
+.nav-links li a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 50%; right: 50%;
+  height: 2px;
+  background: var(--clr-teal);
+  border-radius: 2px;
+  transition: left var(--transition), right var(--transition);
+}
+.nav-links li a:hover { color: var(--clr-teal); background: var(--clr-teal-ghost); }
+.nav-links li a.active {
+  color: var(--clr-teal);
+  font-weight: 600;
+}
+.nav-links li a.active::after { left: 14px; right: 14px; }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+.nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 40px;
+  border: 1px solid var(--clr-border);
+  background: var(--clr-surface);
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.nav-profile:hover {
+  border-color: var(--clr-teal-light);
+  box-shadow: 0 0 0 3px var(--clr-teal-ghost);
+}
+.nav-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--clr-teal-light), var(--clr-teal));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 0.85rem;
+}
+.nav-profile-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--clr-text);
+}
+
+/* ─── PAGE WRAPPER ─── */
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 40px) 28px 80px;
+}
+
+/* ─── DASHBOARD TABS ─── */
+.dashboard-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  animation: slideDown 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tab-card {
+  flex: 1;
+  background: var(--clr-surface);
+  border: 2px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-card:hover {
+  border-color: var(--clr-teal-light);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.tab-card.active {
+  background: var(--clr-teal);
+  border-color: var(--clr-teal);
+  box-shadow: var(--shadow-md);
+}
+
+.tab-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--clr-teal-ghost2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+
+.tab-card.active .tab-icon {
+  background: rgba(255,255,255,0.2);
+}
+
+.tab-content {
+  flex: 1;
+}
+
+.tab-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin-bottom: 2px;
+  letter-spacing: -0.01em;
+  transition: color var(--transition);
+}
+
+.tab-card.active .tab-title {
+  color: #fff;
+}
+
+.tab-desc {
+  font-size: 0.8rem;
+  color: var(--clr-text-3);
+  transition: color var(--transition);
+}
+
+.tab-card.active .tab-desc {
+  color: rgba(255,255,255,0.85);
+}
+
+/* ─── LIVE TRIP SECTION ─── */
+.live-trip-section {
+  margin-bottom: 32px;
+  animation: slideUp 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--clr-text);
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+  border: 1px solid #81c784;
+  color: var(--clr-success);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  letter-spacing: 0.02em;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--clr-success);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.live-trip-card {
+  background: linear-gradient(135deg, var(--clr-teal) 0%, var(--clr-teal-dark) 100%);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.live-trip-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.live-trip-route {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.trip-city {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.trip-arrow {
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.live-trip-time {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 24px;
+}
+
+.live-trip-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* ─── PAST TRIPS SECTION ─── */
+.past-trips-section {
+  animation: slideUp 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+
+.past-trip-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.past-trip-card:hover {
+  border-color: var(--clr-teal);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.past-trip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.past-trip-route {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.past-city {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  letter-spacing: -0.01em;
+}
+
+.past-arrow {
+  color: var(--clr-text-3);
+  font-size: 1rem;
+}
+
+.trip-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.trip-status.completed {
+  background: #e8f5e9;
+  color: var(--clr-success);
+  border: 1px solid #81c784;
+}
+
+.trip-status.cancelled {
+  background: #ffebee;
+  color: var(--clr-danger);
+  border: 1px solid #ef9a9a;
+}
+
+.past-trip-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--clr-border-light);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  color: var(--clr-text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  color: var(--clr-text);
+  font-weight: 600;
+}
+
+/* ─── EMPTY STATE ─── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--clr-text-3);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .dashboard-tabs {
+    flex-direction: column;
+  }
+  
+  .live-trip-route {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .trip-arrow {
+    transform: rotate(90deg);
+  }
+  
+  .past-trip-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .past-trip-route {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-wrapper {
+    padding: calc(var(--nav-h) + 32px) 20px 60px;
+  }
+  
+  .live-trip-card {
+    padding: 24px 20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      TravelIt
+      <span class="nav-logo-dot"></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#" class="active">My Trips</a></li>
+      <li><a href="#">Profile</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-profile">
+        <div class="nav-avatar">SG</div>
+        <span class="nav-profile-name">Sanya</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="page-wrapper">
+
+  <!-- Live/Upcoming Trip Section -->
+  <div class="live-trip-section">
+    <div class="section-header">
+      <h2 class="section-title">Upcoming Trip</h2>
+      <span class="live-badge">
+        <span class="live-dot"></span>
+        LIVE
+      </span>
+    </div>
+
+    <div class="live-trip-card">
+      <div class="live-trip-route">
+        <span class="trip-city">Delhi</span>
+        <span class="trip-arrow">→</span>
+        <span class="trip-city">Mumbai</span>
+      </div>
+      <div class="live-trip-time">Friday, March 20, 2026 • 8:00 AM - 1:20 PM</div>
+      
+      <div class="live-trip-details">
+        <div class="detail-item">
+          <div class="detail-label">Mode</div>
+          <div class="detail-value">Flight + Taxi</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Duration</div>
+          <div class="detail-value">5h 29m</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Travelers</div>
+          <div class="detail-value">1 person</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Status</div>
+          <div class="detail-value">Confirmed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Past Trips Section -->
+  <div class="past-trips-section">
+    <div class="section-header">
+      <h2 class="section-title">Past Trips</h2>
+    </div>
+
+    <!-- Trip 1 -->
+    <div class="past-trip-card" onclick="viewTrip('trip1')">
+      <div class="past-trip-header">
+        <div class="past-trip-route">
+          <span class="past-city">Mumbai</span>
+          <span class="past-arrow">→</span>
+          <span class="past-city">Bangalore</span>
+        </div>
+        <span class="trip-status completed">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          Completed
+        </span>
+      </div>
+      <div class="past-trip-info">
+        <div class="info-item">
+          <div class="info-label">Date</div>
+          <div class="info-value">Jan 28, 2026</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Mode</div>
+          <div class="info-value">Flight</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Duration</div>
+          <div class="info-value">2h 15m</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Cost</div>
+          <div class="info-value">₹4,200</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trip 2 -->
+    <div class="past-trip-card" onclick="viewTrip('trip2')">
+      <div class="past-trip-header">
+        <div class="past-trip-route">
+          <span class="past-city">Delhi</span>
+          <span class="past-arrow">→</span>
+          <span class="past-city">Jaipur</span>
+        </div>
+        <span class="trip-status completed">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          Completed
+        </span>
+      </div>
+      <div class="past-trip-info">
+        <div class="info-item">
+          <div class="info-label">Date</div>
+          <div class="info-value">Jan 15, 2026</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Mode</div>
+          <div class="info-value">Car Rental</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Duration</div>
+          <div class="info-value">5h 30m</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Cost</div>
+          <div class="info-value">₹2,800</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trip 3 -->
+    <div class="past-trip-card" onclick="viewTrip('trip3')">
+      <div class="past-trip-header">
+        <div class="past-trip-route">
+          <span class="past-city">Chennai</span>
+          <span class="past-arrow">→</span>
+          <span class="past-city">Hyderabad</span>
+        </div>
+        <span class="trip-status cancelled">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          Cancelled
+        </span>
+      </div>
+      <div class="past-trip-info">
+        <div class="info-item">
+          <div class="info-label">Date</div>
+          <div class="info-value">Dec 20, 2025</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Mode</div>
+          <div class="info-value">Train</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Duration</div>
+          <div class="info-value">8h 45m</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Refund</div>
+          <div class="info-value">₹1,050</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trip 4 -->
+    <div class="past-trip-card" onclick="viewTrip('trip4')">
+      <div class="past-trip-header">
+        <div class="past-trip-route">
+          <span class="past-city">Pune</span>
+          <span class="past-arrow">→</span>
+          <span class="past-city">Goa</span>
+        </div>
+        <span class="trip-status completed">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          Completed
+        </span>
+      </div>
+      <div class="past-trip-info">
+        <div class="info-item">
+          <div class="info-label">Date</div>
+          <div class="info-value">Nov 30, 2025</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Mode</div>
+          <div class="info-value">Bus</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Duration</div>
+          <div class="info-value">12h 15m</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Cost</div>
+          <div class="info-value">₹950</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  if (window.scrollY > 10) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
+// Navigation functions
+function navigateTo(page) {
+  alert(`Navigating to ${page}...`);
+  // In real app: window.location.href = `/${page}`;
+}
+
+function viewTrip(tripId) {
+  alert(`Viewing details for ${tripId}...`);
+  // In real app: window.location.href = `/trip/${tripId}`;
+}
+</script>
+
+</body>
+</html>
